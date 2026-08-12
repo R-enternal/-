@@ -44,7 +44,7 @@ async def planner(state: PlanState) -> dict[str, Any]:
             [SystemMessage(content=dedent(_PLANNER_PROMPT).format(task=task))]
         )
         text = str(resp.content).strip()
-        if text and not text.startswith("我是仓维云"):
+        if text and not text.startswith("我是仓脉智诊"):
             lines = [line.strip("-* 0123456789.、)").strip() for line in text.splitlines() if line.strip()]
             plan = [line for line in lines if 4 <= len(line) <= 60][:5] or plan
     except Exception as exc:  # noqa: BLE001

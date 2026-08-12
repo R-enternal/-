@@ -51,7 +51,7 @@ def _get_redis() -> redis_lib.Redis:
 def _history_key(session_id: str) -> str:
     return f"agent:history:{session_id}"
 
-SYSTEM_PROMPT = """你是仓维云智能运维助手，帮助仓储管理人员查询设备运行状态。
+SYSTEM_PROMPT = """你是仓脉智诊智能运维助手，帮助仓储管理人员查询设备运行状态。
 
 工作原则：
 1. 根据用户问题选择合适的工具查询实时数据，不要编造数据

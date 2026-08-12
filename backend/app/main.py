@@ -1,4 +1,4 @@
-"""仓维云 FastAPI 入口
+"""仓脉智诊 FastAPI 入口
 
 分层参考 OneCall 项目：main 只负责装配路由和生命周期，
 业务逻辑全部在 services 层，路由只做参数校验与响应包装。

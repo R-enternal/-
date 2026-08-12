@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     )
 
     # 应用配置
-    app_name: str = "仓维云"
+    app_name: str = "仓脉智诊"
     debug: bool = True
     host: str = "0.0.0.0"
     port: int = 9901

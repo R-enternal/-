@@ -44,7 +44,7 @@ def run_loop(interval_seconds: int) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="仓维云模拟数据源")
+    parser = argparse.ArgumentParser(description="仓脉智诊模拟数据源")
     parser.add_argument("--minutes", type=int, default=120, help="生成最近多少分钟（默认 120）")
     parser.add_argument("--loop", action="store_true", help="持续模式")
     parser.add_argument("--seed", type=int, default=None, help="随机种子")

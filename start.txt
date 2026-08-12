@@ -1,14 +1,14 @@
 @echo off
-rem 仓维云一键启动（Windows）
+rem 仓脉智诊一键启动（Windows）
 echo ========================================
-echo   仓维云 - 轻量化AI仓储设备智能维检平台
+echo   仓脉智诊 - 轻量化AI仓储设备智能维检平台
 echo ========================================
 
 echo [1/2] 启动后端 (端口 9901)...
-start "仓维云后端" cmd /k "cd /d D:\AI Program\仓维云-agent\backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 9901"
+start "仓脉智诊后端" cmd /k "cd /d D:\AI Program\仓维云-agent\backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 9901"
 
 echo [2/2] 启动前端 (端口 5173)...
-start "仓维云前端" cmd /k "cd /d D:\AI Program\仓维云-agent\frontend && npm run dev"
+start "仓脉智诊前端" cmd /k "cd /d D:\AI Program\仓维云-agent\frontend && npm run dev"
 
 echo.
 echo 服务地址：

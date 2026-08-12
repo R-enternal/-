@@ -75,7 +75,7 @@ def main() -> None:
         # 2. 前端
         assert wait_ready("http://127.0.0.1:5173/"), "前端未就绪"
         status, html = http_get("http://127.0.0.1:5173/")
-        assert status == 200 and "仓维云" in html
+        assert status == 200 and "仓脉智诊" in html
         print("[验证② 前端] 首页可访问 OK")
 
         # 3. vite proxy → 后端设备接口
