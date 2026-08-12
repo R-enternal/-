@@ -1,0 +1,21 @@
+# 环境与密钥
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 数据库迁移临时
+*.sqlite3
+
+# 日志与临时文件
+logs/
+uploads/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml

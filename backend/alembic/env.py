@@ -1,0 +1,59 @@
+"""Alembic 迁移环境
+
+关键点：从应用配置读取 MySQL 连接串，并加载 app.models 的所有模型，
+让 autogenerate 能识别全部 14 张表。
+"""
+
+import sys
+from logging.config import fileConfig
+from pathlib import Path
+
+from alembic import context
+from sqlalchemy import engine_from_config, pool
+
+# 把 backend 目录加入 sys.path，确保能 import app 包
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.config import config as app_config  # noqa: E402
+from app.database import Base  # noqa: E402
+import app.models  # noqa: E402, F401  导入全部模型注册进 Base.metadata
+
+config = context.config
+config.set_main_option("sqlalchemy.url", app_config.mysql_url)
+
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
+
+target_metadata = Base.metadata
+
+
+def run_migrations_offline() -> None:
+    """离线模式：只生成 SQL，不连数据库"""
+    url = config.get_main_option("sqlalchemy.url")
+    context.configure(
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        dialect_opts={"paramstyle": "named"},
+    )
+    with context.begin_transaction():
+        context.run_migrations()
+
+
+def run_migrations_online() -> None:
+    """在线模式：连接数据库执行迁移"""
+    connectable = engine_from_config(
+        config.get_section(config.config_ini_section, {}),
+        prefix="sqlalchemy.",
+        poolclass=pool.NullPool,
+    )
+    with connectable.connect() as connection:
+        context.configure(connection=connection, target_metadata=target_metadata)
+        with context.begin_transaction():
+            context.run_migrations()
+
+
+if context.is_offline_mode():
+    run_migrations_offline()
+else:
+    run_migrations_online()

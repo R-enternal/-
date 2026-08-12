@@ -1,0 +1,43 @@
+# 依赖
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# 环境与敏感信息
+.env
+.env.*
+!.env.example
+
+# 构建产物
+dist/
+unpackage/
+build/
+
+# 缓存与日志
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.log
+
+# 运行时数据
+backend/vector_db/
+backend/logs/
+backend/kb_docs/
+
+# 小程序端（暂不公开）
+miniapp/
+
+# 临时与本地目录
+_docx_tools/
+login-demo/
+frontend-demo/
+
+# 商业文档
+*.docx
+*.pdf
+
+# 系统文件
+.DS_Store
+Thumbs.db
