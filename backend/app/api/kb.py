@@ -1,4 +1,4 @@
-"""知识库 API：文档上传、列表、删除、语义检索"""
+"""知识库 API：多格式文档上传、列表、删除、语义检索"""
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from sqlalchemy.orm import Session
@@ -9,27 +9,39 @@ from app.services import kb_service
 
 router = APIRouter(prefix="/api/kb", tags=["知识库"])
 
-SUPPORTED_TYPES = {".md": "MD", ".txt": "TXT", ".markdown": "MD"}
+SUPPORTED_TYPES = {
+    ".md": "MD",
+    ".markdown": "MD",
+    ".txt": "TXT",
+    ".html": "HTML",
+    ".htm": "HTML",
+    ".pdf": "PDF",
+    ".docx": "DOCX",
+    ".json": "JSON",
+    ".csv": "CSV",
+    ".xlsx": "XLSX",
+}
 
 
 @router.post("/upload")
 async def upload_document(file: UploadFile, db: Session = Depends(get_db)) -> dict:
-    """上传文档并建立向量索引（支持 .md/.txt）"""
+    """上传文档并建立向量索引（支持 md/txt/html/pdf/docx/json/csv/xlsx）"""
     filename = file.filename or "unnamed"
     suffix = "." + filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
     doc_type = SUPPORTED_TYPES.get(suffix)
     if doc_type is None:
-        raise HTTPException(status_code=400, detail="仅支持 .md / .txt 文档")
+        raise HTTPException(
+            status_code=400,
+            detail="仅支持 md/txt/html/pdf/docx/json/csv/xlsx 文档",
+        )
 
     content_bytes = await file.read()
-    try:
-        content = content_bytes.decode("utf-8")
-    except UnicodeDecodeError as exc:
-        raise HTTPException(status_code=400, detail="文档编码需为 UTF-8") from exc
-    if not content.strip():
+    if not content_bytes:
         raise HTTPException(status_code=400, detail="文档内容为空")
-
-    result = kb_service.ingest_text(filename, content, doc_type=doc_type, created_by="admin")
+    try:
+        result = kb_service.ingest_file(filename, content_bytes, created_by="admin")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     return ok(data=result, message=f"已入库 {filename}，切块 {result['chunks']} 个")
 
 
